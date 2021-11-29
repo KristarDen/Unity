@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveTube : MonoBehaviour
 {
-    float MoveVelocity = 1;
+    float MoveVelocity = 2;
 
     void Start()
       {
