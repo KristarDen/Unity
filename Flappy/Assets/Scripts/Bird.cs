@@ -24,7 +24,7 @@ public class Bird : MonoBehaviour
         Text.text = $"{score}";
     }
 
-    private bool gameIsEnd = false;
+    public bool gameIsEnd = false;
 
     void Update()
     {
@@ -57,9 +57,11 @@ public class Bird : MonoBehaviour
         }
         else
         {
-            Text.text = $"Game over \nScore: {score}";
+            Text.text = $"Game over \nScore: {score} \nPress enter to restart";
             Destroy(GameObject.Find("MainScreen"));
+            GameObject.Find("Clock").GetComponent<Text>().enabled = false;
             Destroy(this.gameObject);
+
         }
         
     }
