@@ -19,7 +19,8 @@ public class LeftEnd : MonoBehaviour
     {
 
         float value = Random.Range(-3.0f, 3.0f);
-        collision.gameObject.transform.parent.transform.position = new Vector3(11.1f, value, 0f);
+        collision.gameObject.transform.parent.transform.parent.transform.position = new Vector3(11.1f, value, 0f);
+        //collision.gameObject.transform.parent.transform.parent.GetComponent<MoveTube>().SetDistance2(GetComponent<MoveTube>()._distance);
         Debug.Log(collision.name);
     }
 }

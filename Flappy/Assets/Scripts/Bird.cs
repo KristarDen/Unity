@@ -12,6 +12,10 @@ public class Bird : MonoBehaviour
     public float ForceMagnitude2 = 100;
 
     private Text Text;
+    private Text Clock;
+
+    private GameObject Menu;
+    private GameObject mainScreen;
 
     private uint score = 0;
 
@@ -20,7 +24,12 @@ public class Bird : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
         Text = GameObject.Find("Text").GetComponent<Text>();
+        Clock = GameObject.Find("Clock").GetComponent<Text>();
+        Menu = GameObject.Find("Menu");
+        mainScreen = GameObject.Find("MainScreen");
+        
         Text.text = $"{score}";
     }
 
@@ -33,6 +42,16 @@ public class Bird : MonoBehaviour
             if (Input.GetKey(KeyCode.Space))
             {
                 rb.AddForce(Vector2.up * ForceMagnitude2 * Time.deltaTime);
+            }
+
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                if(Menu.active == false)
+                {
+                    Menu.SetActive(true);
+                    Time.timeScale = 0;
+                    mainScreen.SetActive(false);
+                }
             }
         }
 
@@ -57,7 +76,7 @@ public class Bird : MonoBehaviour
         }
         else
         {
-            Text.text = $"Game over \nScore: {score} \nPress enter to restart";
+            Text.text = $"Game over \nScore: {score} \nTime: {Clock.text}\nPress enter to restart";
             Destroy(GameObject.Find("MainScreen"));
             GameObject.Find("Clock").GetComponent<Text>().enabled = false;
             Destroy(this.gameObject);
