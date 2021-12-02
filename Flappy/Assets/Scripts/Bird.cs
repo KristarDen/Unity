@@ -17,9 +17,15 @@ public class Bird : MonoBehaviour
     private GameObject Menu;
     private GameObject mainScreen;
 
+    private GameObject healthBar;
+
     private uint score = 0;
 
+    private int health = 3;
+
     bool triggerTouch = false; //false you touched first line of trigger true second 
+
+    public Slider Hunger;
 
     void Start()
     {
@@ -29,7 +35,11 @@ public class Bird : MonoBehaviour
         Clock = GameObject.Find("Clock").GetComponent<Text>();
         Menu = GameObject.Find("Menu");
         mainScreen = GameObject.Find("MainScreen");
-        
+
+        healthBar = GameObject.Find("HealthBar");
+
+        Hunger = GameObject.Find("Hunger").GetComponent<Slider>();
+
         Text.text = $"{score}";
     }
 
@@ -58,11 +68,11 @@ public class Bird : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-     {
+      {
 
-        if( collision.gameObject.name == "Trigger")
+        if (collision.gameObject.name == "Trigger")
         {
-            if(triggerTouch == false)
+            if (triggerTouch == false)
             {
                 score += 1;
                 Text.text = $"{score}";
@@ -72,16 +82,82 @@ public class Bird : MonoBehaviour
             {
                 triggerTouch = false;
             }
-            
-        }
-        else
-        {
-            Text.text = $"Game over \nScore: {score} \nTime: {Clock.text}\nPress enter to restart";
-            Destroy(GameObject.Find("MainScreen"));
-            GameObject.Find("Clock").GetComponent<Text>().enabled = false;
-            Destroy(this.gameObject);
 
         }
+        else if (collision.gameObject.transform.parent.transform.parent.gameObject.tag == "Tube")
+        {
+            if (health >= 1)
+            {
+                Debug.Log("Столкновение с " + collision.gameObject.transform.parent.transform.parent.gameObject.name);
+
+                // teleport to safe point (tube center)
+                this.transform.position = new Vector2(
+                collision.gameObject.transform.parent.transform.parent.gameObject.transform.position.x + 0.6f,
+                collision.gameObject.transform.parent.transform.parent.gameObject.transform.position.y - 0.5f);
+
+
+                rb.gravityScale = 0.1f;
+                InvokeRepeating("GravityPause", 2.0f, 0.25f);
+
+
+                healthBar.transform.GetChild((health - 1)).gameObject.SetActive(false);
+                health--;
+
+
+            }
+            else
+            {
+                GameOver();
+            }
+
+        }
+        else if (collision.name == "Bug")
+        {
+            if (Hunger.value + 30f > 100f)
+            {
+                Hunger.value += 100f - Hunger.value;
+            }
+            Hunger.value += 30f;
+
+            collision.gameObject.SetActive(false);
+        }
+        else if (collision.name == "Egg-Pixel")
+        {
+            if (health < 3)
+            {
+                health++;
+                healthBar.transform.GetChild((health - 1)).gameObject.SetActive(true);
+            }
+            collision.gameObject.SetActive(false);
+        }
+        else if (collision.gameObject.name == "Spawn")
+        {
+
+        }
+
+        else
+        {
+
+            GameOver();
+        }
         
+    }
+
+    private void GameOver()
+    {
+        Text.text = $"Game over \nScore: {score} \nTime: {Clock.text}\nPress enter to restart";
+        Destroy(healthBar);
+        Destroy(GameObject.Find("MainScreen"));
+        GameObject.Find("Clock").GetComponent<Text>().enabled = false;
+        Destroy(this.gameObject);
+    }
+
+    private void GravityPause()
+    {
+        if(rb.gravityScale < 0.3f)
+        {
+            rb.gravityScale += 0.05f;
+        }
+        Debug.Log("Bird gravity scale: " + rb.gravityScale);
     }
 }
