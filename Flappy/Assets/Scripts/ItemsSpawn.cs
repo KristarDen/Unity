@@ -6,6 +6,8 @@ public class ItemsSpawn : MonoBehaviour
 {
     GameObject Pixel_Egg;
     GameObject Bug;
+    bool eggSpawnTrig = false;
+    bool bugSpawnTrig = false;
 
     void Start()
     {
@@ -19,22 +21,25 @@ public class ItemsSpawn : MonoBehaviour
 
     void Update()
     {
-        if(Pixel_Egg.gameObject.activeSelf == false)
+        if(Pixel_Egg.gameObject.activeInHierarchy == false && eggSpawnTrig == false)
         {
             float period = Random.Range(20f, 40f);
+            eggSpawnTrig = true;
             Invoke("SpawnEgg", period);
         }
-        if (Bug.gameObject.activeSelf == false)
+        if (Bug.gameObject.activeInHierarchy == false && bugSpawnTrig == false)
         {
             float period = Random.Range(10f, 20f);
+            bugSpawnTrig = true;
             Invoke("SpawnBug", period);
         }
-        transform.Translate(Vector2.left * 2 * Time.deltaTime);
+        //transform.Translate(Vector2.left * 2 * Time.deltaTime);
     }
 
     void SpawnEgg()
     {
         Pixel_Egg.SetActive(true);
+        eggSpawnTrig = false;
         GameObject SpawnZone = RandomSpawnZone();
 
         float x = 0, y = 0;
@@ -48,12 +53,16 @@ public class ItemsSpawn : MonoBehaviour
     void SpawnBug()
     {
         Bug.SetActive(true);
+        bugSpawnTrig = false;
         GameObject SpawnZone = RandomSpawnZone();
 
         float x = 0, y = 0;
 
-        x = SpawnZone.transform.position.x + Random.Range(-2f, 2f);
-        y = SpawnZone.transform.position.y + Random.Range(-4f, 4f);
+        float width = SpawnZone.GetComponent<Collider2D>().bounds.size.x / 2;
+        float heith = SpawnZone.GetComponent<Collider2D>().bounds.size.y / 2;
+
+        x = SpawnZone.transform.position.x + Random.Range(-width, width);
+        y = SpawnZone.transform.position.y + Random.Range(-heith, heith);
 
         Bug.transform.position = new Vector3(x, y, 0f);
     }

@@ -17,6 +17,9 @@ public class Bird : MonoBehaviour
     private GameObject Menu;
     private GameObject mainScreen;
 
+    GameObject Pixel_Egg;
+    GameObject Bug;
+
     private GameObject healthBar;
 
     private uint score = 0;
@@ -40,6 +43,9 @@ public class Bird : MonoBehaviour
 
         Hunger = GameObject.Find("Hunger").GetComponent<Slider>();
 
+        Pixel_Egg = GameObject.Find("Egg-Pixel");
+        Bug = GameObject.Find("Bug");
+
         Text.text = $"{score}";
     }
 
@@ -60,7 +66,6 @@ public class Bird : MonoBehaviour
                 {
                     Menu.SetActive(true);
                     Time.timeScale = 0;
-                    mainScreen.SetActive(false);
                 }
             }
         }
@@ -82,6 +87,30 @@ public class Bird : MonoBehaviour
             {
                 triggerTouch = false;
             }
+
+        }
+        else if (collision.gameObject.name == "Bug")
+        {
+            if (Hunger.value + 30f > 100f)
+            {
+                Hunger.value += 100f - Hunger.value;
+            }
+            Hunger.value += 30f;
+
+            collision.gameObject.SetActive(false);
+        }
+        else if (collision.gameObject.name == "Egg-Pixel")
+        {
+            if (health < 3)
+            {
+                health++;
+                healthBar.transform.GetChild((health - 1)).gameObject.SetActive(true);
+                Debug.Log("Health : " + health);
+            }
+            collision.gameObject.SetActive(false);
+        }
+        else if (collision.gameObject.name == "Spawn")
+        {
 
         }
         else if (collision.gameObject.transform.parent.transform.parent.gameObject.tag == "Tube")
@@ -111,29 +140,7 @@ public class Bird : MonoBehaviour
             }
 
         }
-        else if (collision.name == "Bug")
-        {
-            if (Hunger.value + 30f > 100f)
-            {
-                Hunger.value += 100f - Hunger.value;
-            }
-            Hunger.value += 30f;
-
-            collision.gameObject.SetActive(false);
-        }
-        else if (collision.name == "Egg-Pixel")
-        {
-            if (health < 3)
-            {
-                health++;
-                healthBar.transform.GetChild((health - 1)).gameObject.SetActive(true);
-            }
-            collision.gameObject.SetActive(false);
-        }
-        else if (collision.gameObject.name == "Spawn")
-        {
-
-        }
+        
 
         else
         {
@@ -143,12 +150,18 @@ public class Bird : MonoBehaviour
         
     }
 
-    private void GameOver()
+    public void GameOver()
     {
-        Text.text = $"Game over \nScore: {score} \nTime: {Clock.text}\nPress enter to restart";
+        Menu.GetComponent<GameControl>().setRecord();
+        
         Destroy(healthBar);
         Destroy(GameObject.Find("MainScreen"));
+        Destroy(Pixel_Egg);
+        Destroy(Bug);
         GameObject.Find("Clock").GetComponent<Text>().enabled = false;
+        Text.text = $"Game over \nScore: {score} \nTime: {Clock.text}\nPress enter to restart";
+        Hunger.gameObject.SetActive(false);
+        
         Destroy(this.gameObject);
     }
 
@@ -157,6 +170,10 @@ public class Bird : MonoBehaviour
         if(rb.gravityScale < 0.3f)
         {
             rb.gravityScale += 0.05f;
+        }
+        else
+        {
+            CancelInvoke("GravityPause");
         }
         Debug.Log("Bird gravity scale: " + rb.gravityScale);
     }
