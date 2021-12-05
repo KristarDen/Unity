@@ -59,7 +59,7 @@ public class GameControl : MonoBehaviour
             isGameStarted = true;
             Hunger.GetComponent<HungerScript>().enabled = true;
             this.gameObject.SetActive(false);
-            //getRecord();
+            getRecord();
         }
         else
         {
@@ -117,7 +117,7 @@ public class GameControl : MonoBehaviour
         int currScore = Convert.ToInt32(Score.text.Trim());
         int bestScore = Convert.ToInt32(BestScore.text.Trim());
 
-        using (StreamWriter sw = new StreamWriter(saveFilePath, true))
+        using (StreamWriter sw = new StreamWriter(saveFilePath, false))
         {
             
 

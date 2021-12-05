@@ -27,6 +27,7 @@ public class Bird : MonoBehaviour
     private int health = 3;
 
     bool triggerTouch = false; //false you touched first line of trigger true second 
+    bool itemTouch = false;
 
     public Slider Hunger;
 
@@ -49,16 +50,27 @@ public class Bird : MonoBehaviour
         Text.text = $"{score}";
     }
 
-    public bool gameIsEnd = false;
+    bool gameIsEnd = false;
+    float direction = 1f;
+    float angle;
 
     void Update()
     {
         if (gameIsEnd == false)
         {
+            angle = transform.eulerAngles.z;
             if (Input.GetKey(KeyCode.Space))
             {
                 rb.AddForce(Vector2.up * ForceMagnitude2 * Time.deltaTime);
+                angle += 30f;
             }
+
+            
+            if (angle > 180f) angle -= 360f;
+
+            if ((angle < -55f) || (angle > 55f)) direction *= -1f;
+
+            transform.Rotate(0, 0, rb.velocity.y * 10f * direction * Time.deltaTime);
 
             if (Input.GetKey(KeyCode.Escape))
             {
@@ -91,23 +103,41 @@ public class Bird : MonoBehaviour
         }
         else if (collision.gameObject.name == "Bug")
         {
-            if (Hunger.value + 30f > 100f)
+            if (itemTouch == false)
             {
-                Hunger.value += 100f - Hunger.value;
-            }
-            Hunger.value += 30f;
+                if (Hunger.value + 30f > 100f)
+                {
+                    Hunger.value += 100f - Hunger.value;
+                }
+                Hunger.value += 30f;
 
-            collision.gameObject.SetActive(false);
+                collision.gameObject.SetActive(false);
+
+                itemTouch = true;
+            }
+            else
+            {
+                itemTouch = false;
+            }
         }
         else if (collision.gameObject.name == "Egg-Pixel")
         {
-            if (health < 3)
+            if(itemTouch == false)
             {
-                health++;
-                healthBar.transform.GetChild((health - 1)).gameObject.SetActive(true);
-                Debug.Log("Health : " + health);
+                if (health < 3)
+                {
+                    health++;
+                    healthBar.transform.GetChild((health - 1)).gameObject.SetActive(true);
+                    Debug.Log("Health : " + health);
+                }
+                collision.gameObject.SetActive(false);
+                itemTouch = true;
             }
-            collision.gameObject.SetActive(false);
+            else
+            {
+                itemTouch = false;
+            }
+            
         }
         else if (collision.gameObject.name == "Spawn")
         {
