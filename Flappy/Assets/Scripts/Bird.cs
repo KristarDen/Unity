@@ -11,7 +11,7 @@ public class Bird : MonoBehaviour
 
     public float ForceMagnitude2 = 100;
 
-    private Text Text;
+    private Text Score;
     private Text Clock;
 
     private GameObject Menu;
@@ -35,7 +35,7 @@ public class Bird : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        Text = GameObject.Find("Text").GetComponent<Text>();
+        Score = GameObject.Find("Score").GetComponent<Text>();
         Clock = GameObject.Find("Clock").GetComponent<Text>();
         Menu = GameObject.Find("Menu");
         mainScreen = GameObject.Find("MainScreen");
@@ -47,7 +47,7 @@ public class Bird : MonoBehaviour
         Pixel_Egg = GameObject.Find("Egg-Pixel");
         Bug = GameObject.Find("Bug");
 
-        Text.text = $"{score}";
+        Score.text = $"{score}";
     }
 
     bool gameIsEnd = false;
@@ -92,7 +92,7 @@ public class Bird : MonoBehaviour
             if (triggerTouch == false)
             {
                 score += 1;
-                Text.text = $"{score}";
+                Score.text = $"{score}";
                 triggerTouch = true;
             }
             else
@@ -103,22 +103,16 @@ public class Bird : MonoBehaviour
         }
         else if (collision.gameObject.name == "Bug")
         {
-            if (itemTouch == false)
-            {
-                if (Hunger.value + 30f > 100f)
-                {
-                    Hunger.value += 100f - Hunger.value;
-                }
-                Hunger.value += 30f;
 
-                collision.gameObject.SetActive(false);
-
-                itemTouch = true;
-            }
-            else
+            if (Hunger.value + 30f > 100f)
             {
-                itemTouch = false;
+                Hunger.value += 100f - Hunger.value;
             }
+            Hunger.value += 30f;
+
+            collision.gameObject.SetActive(false);
+
+
         }
         else if (collision.gameObject.name == "Egg-Pixel")
         {
@@ -189,7 +183,7 @@ public class Bird : MonoBehaviour
         Destroy(Pixel_Egg);
         Destroy(Bug);
         GameObject.Find("Clock").GetComponent<Text>().enabled = false;
-        Text.text = $"Game over \nScore: {score} \nTime: {Clock.text}\nPress enter to restart";
+        Score.text = $"Game over \nScore: {score} \nTime: {Clock.text}\nPress enter to restart";
         Hunger.gameObject.SetActive(false);
         
         Destroy(this.gameObject);
