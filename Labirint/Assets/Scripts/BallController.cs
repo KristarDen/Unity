@@ -12,14 +12,18 @@ public class BallController : MonoBehaviour
     public Camera MainCamera;
 
     public Text Clock;
+    public Text CountOfChecks;
 
 
     public Rigidbody rb;
+
+    private int KeyCount = 0;
     void Start()
     {
         forceDirection = Vector3.zero;
         rb = GetComponent<Rigidbody>();
         Message = GameObject.Find("Message").GetComponent<Text>();
+        CountOfChecks = GameObject.Find("CountOfChecks").GetComponent<Text>();
         Clock = GameObject.Find("Clock").GetComponent<Text>();
         selfieRod = MainCamera.transform.position - this.transform.position;
     }
@@ -50,11 +54,17 @@ public class BallController : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             Gate1.isOpen = true;
+
+            KeyCount += 1;
+            CountOfChecks.text = $"{KeyCount}";
         }
         if (other.name == "Check2")
         {
             other.gameObject.SetActive(false);
             Gate2.isOpen = true;
+
+            KeyCount += 1;
+            CountOfChecks.text = $"{KeyCount}";
         }
     }
 }
