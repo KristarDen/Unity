@@ -33,11 +33,13 @@ public class Check2 : MonoBehaviour
         {
             timeToOver -= 1;
             circle.fillAmount -= tick;
+            UICheckTimer.ChangeState($"{timeToOver}", tick);
             countdown.text = $"{timeToOver}";
         }
         else
         {
             isSlowOpen = true;
+            UICheckTimer.Hide();
             CancelInvoke("TimerCountdown");
         }
 
@@ -54,11 +56,14 @@ public class Check2 : MonoBehaviour
     {
         if (isSlowOpen == true) Gate2.isSlowOpen = true;
         else Gate2.isOpen = true;
+        CancelInvoke("TimerCountdown");
+        UICheckTimer.Hide();
         this.gameObject.SetActive(false);
     }
     public void StartTimer()
     {
         InvokeRepeating("TimerCountdown", 1.0f, 1.0f);
+        UICheckTimer.Show();
     }
 
 }

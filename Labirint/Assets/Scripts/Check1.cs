@@ -22,6 +22,7 @@ public class Check1 : MonoBehaviour
         countdown.text = $"{timeToOver}";
         Check2.SetActive(false);
         InvokeRepeating("TimerCountdown", 1.0f, 1.0f);
+        UICheckTimer.Show();
         tick = 1 / timeToOver;
     }
 
@@ -35,11 +36,13 @@ public class Check1 : MonoBehaviour
         {
             timeToOver -= 1;
             circle.fillAmount -= tick;
+            UICheckTimer.ChangeState($"{timeToOver}", tick);
             countdown.text = $"{timeToOver}";
         }
         else
         {
             isSlowOpen = true;
+            UICheckTimer.Hide();
             CancelInvoke("TimerCountdown");
         }
 
@@ -58,7 +61,7 @@ public class Check1 : MonoBehaviour
         if (isSlowOpen == true) Gate1.isSlowOpen = true;
         else Gate1.isOpen = true;
 
-
+        CancelInvoke("TimerCountdown");
         Check2.SetActive(true);
         Check2.GetComponent<Check2>().StartTimer();
         this.gameObject.SetActive(false);
