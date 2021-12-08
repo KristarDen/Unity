@@ -5,6 +5,7 @@ using UnityEngine;
 public class Gate2 : MonoBehaviour
 {
     public static bool isOpen = false;
+    public static bool isSlowOpen = false;
     void Start()
     {
 
@@ -15,7 +16,11 @@ public class Gate2 : MonoBehaviour
     {
         if (isOpen == true)
         {
-            transform.Rotate(0, 10.0f * Time.deltaTime, 0);
+            transform.Rotate(0, 12.0f * Time.deltaTime, 0);
+        }
+        else if (isSlowOpen == true)
+        {
+            transform.Rotate(0, 1.0f * Time.deltaTime, 0);
         }
     }
 }

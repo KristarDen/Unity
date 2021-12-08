@@ -53,7 +53,7 @@ public class BallController : MonoBehaviour
         if (other.name == "Check1")
         {
             other.gameObject.SetActive(false);
-            Gate1.isOpen = true;
+            
 
             KeyCount += 1;
             CountOfChecks.text = $"{KeyCount}";
@@ -61,7 +61,6 @@ public class BallController : MonoBehaviour
         if (other.name == "Check2")
         {
             other.gameObject.SetActive(false);
-            Gate2.isOpen = true;
 
             KeyCount += 1;
             CountOfChecks.text = $"{KeyCount}";
