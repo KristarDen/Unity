@@ -6,12 +6,28 @@ using UnityEngine.UI;
 public class MusicON : MonoBehaviour
 {
     public Toggle MusicToogle;
+    public GameObject UI;
+    private AudioSource Music;
     public Text Label;
     void Start()
     {
-        MusicToogle = GameObject.Find("MusicOnToogle").GetComponent<Toggle>();
-        Label = GameObject.Find("MusicOnToogle").GetComponent<Text>();
-        MusicToogle.onValueChanged.AddListener(value => HandleOnValueChanged(value));
+        MusicToogle = GameObject.Find("MusicOnToggle").GetComponent<Toggle>();
+        Label = GameObject.Find("MusicToggleLabel").GetComponent<Text>();
+        Music = GameObject.Find("UI").GetComponent<AudioSource>();
+        MusicToogle.onValueChanged.AddListener((value) => {
+            if (MusicToogle.isOn)
+            {
+                Label.text = "On";
+                Music.Play();
+                MusicToogle.Select();
+            }
+            else
+            {
+                Music.Pause();
+                Label.text = "Off";
+            }
+        });
+        
     }
 
 
@@ -22,7 +38,6 @@ public class MusicON : MonoBehaviour
 
     void HandleOnValueChanged(bool value)
     {
-        if (MusicToogle.isOn) Label.text = "On";
-        else Label.text = "Off";
+        
     }
 }

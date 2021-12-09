@@ -51,8 +51,13 @@ public class BallController : MonoBehaviour
         if (other.name == "Finish")
         {
             Message.text = "You Win";
+            sounds[2].Play();
             other.gameObject.SetActive(false);
             Clock.enabled = false;
+            while (sounds[2].isPlaying)
+            {
+
+            }
             this.gameObject.SetActive(false);
             return;
         }
