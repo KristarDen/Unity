@@ -30,6 +30,8 @@ public class UICheckTimer : MonoBehaviour
 
     static public void Hide()
     {
+        TimerUI.fillAmount = 1f;
+        CountdownUI.text = "";
         CountdownUI.gameObject.SetActive(false);
         TimerUI.gameObject.SetActive(false);
     }

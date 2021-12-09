@@ -14,6 +14,10 @@ public class BallController : MonoBehaviour
     public Text Clock;
     public Text CountOfChecks;
 
+    
+
+    private AudioSource[] sounds; // 0 - sound "touch of walls "1 - sound "check point get"
+
 
     public Rigidbody rb;
 
@@ -26,6 +30,8 @@ public class BallController : MonoBehaviour
         CountOfChecks = GameObject.Find("CountOfChecks").GetComponent<Text>();
         Clock = GameObject.Find("Clock").GetComponent<Text>();
         selfieRod = MainCamera.transform.position - this.transform.position;
+
+        sounds = GetComponents<AudioSource>();
     }
 
     void Update()
@@ -48,6 +54,7 @@ public class BallController : MonoBehaviour
             other.gameObject.SetActive(false);
             Clock.enabled = false;
             this.gameObject.SetActive(false);
+            return;
         }
 
         if (other.name == "Check1")
@@ -57,6 +64,12 @@ public class BallController : MonoBehaviour
 
             KeyCount += 1;
             CountOfChecks.text = $"{KeyCount}";
+            if (!sounds[1].isPlaying)
+            {
+                sounds[1].volume = rb.velocity.magnitude / 2.3f;
+                sounds[1].Play();
+            }
+            return;
         }
         if (other.name == "Check2")
         {
@@ -64,6 +77,20 @@ public class BallController : MonoBehaviour
 
             KeyCount += 1;
             CountOfChecks.text = $"{KeyCount}";
+            if (!sounds[1].isPlaying)
+            {
+                sounds[1].volume = rb.velocity.magnitude / 2.3f;
+                sounds[1].Play();
+            }
+
+            return;
         }
+
+        if (!sounds[0].isPlaying)
+        {
+            sounds[0].volume = rb.velocity.magnitude / 2.3f;
+            sounds[0].Play();
+        }
+
     }
 }
