@@ -62,6 +62,7 @@ public class Check1 : MonoBehaviour
         else Gate1.isOpen = true;
 
         CancelInvoke("TimerCountdown");
+        UICheckTimer.Hide();
         Check2.SetActive(true);
         Check2.GetComponent<Check2>().StartTimer();
         this.gameObject.SetActive(false);
