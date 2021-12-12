@@ -25,7 +25,14 @@ public class VolumeSliderController : MonoBehaviour
 
     void SliderChanged()
     {
-       VolumeLabel.text = $"{ (int)((VolumeSlider.value * 100) % 100)}%";
+        if (VolumeSlider.value <= 0.99f) 
+        {
+            VolumeLabel.text = $"{ (int)((VolumeSlider.value * 100) % 100)}%";
+        }
+        else
+        {
+            VolumeLabel.text = "100%";
+        }
        BallController.volume = VolumeSlider.value;
        Soundtrack.volume = VolumeSlider.value;
     }
