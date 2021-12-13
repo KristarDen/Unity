@@ -8,6 +8,8 @@ public class MercuryRotate : MonoBehaviour
     public Transform aroundObj;
     public float rotSpeed = 10f;
 
+    public float selfrotSpeed = 70f;
+
     void Start()
     {
         rotateObj = this.transform.gameObject.GetComponent<Transform>();
@@ -18,5 +20,7 @@ public class MercuryRotate : MonoBehaviour
     void Update()
     {
         rotateObj.RotateAround(aroundObj.position, new Vector3(0, 1, 0), rotSpeed * Time.deltaTime);
+
+        transform.Rotate(0, selfrotSpeed * Time.deltaTime, 0);
     }
 }

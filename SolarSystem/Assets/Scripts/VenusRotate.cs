@@ -7,6 +7,7 @@ public class VenusRotate : MonoBehaviour
     public Transform rotateObj;
     public Transform aroundObj;
     public float rotSpeed = 20f;
+    public float selfrotSpeed = 40f;
 
     void Start()
     {
@@ -18,5 +19,7 @@ public class VenusRotate : MonoBehaviour
     void Update()
     {
         rotateObj.RotateAround(aroundObj.position, new Vector3(0, 1, 0), rotSpeed * Time.deltaTime);
+
+        transform.Rotate(0, selfrotSpeed * Time.deltaTime, 0);
     }
 }
