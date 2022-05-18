@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfMoveData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <MoveData>
+    <Num>1</Num>
+    <Time>4</Time>
+    <KegelsFall>9</KegelsFall>
+    <Score>216</Score>
+  </MoveData>
+  <MoveData>
+    <Num>2</Num>
+    <Time>3</Time>
+    <KegelsFall>1</KegelsFall>
+    <Score>237</Score>
+  </MoveData>
+</ArrayOfMoveData>
